@@ -6,8 +6,16 @@ function App() {
   const [usedMessages, setUsedMessages] = useState([]);
   const [showMessage, setShowMessage] = useState(false);
   const [hearts, setHearts] = useState([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Your messages - you can add more here!
+  // Add your slideshow images here - put them in public/slideshow/ folder
+  const slideshowImages = [
+    '/slideshow/photo1.jpeg',
+    '/slideshow/photo2.jpeg',
+    // Add more images here
+  ];
+
+  // Your messages - add as many as you want!
   const messages = [
     {
       type: 'text',
@@ -23,19 +31,25 @@ function App() {
     },
     {
       type: 'text',
-      content: 'You\'re not just my Valentine, you\'re my forever.'
+      content: 'You\'re not just my today, you\'re my forever.'
     },
     {
       type: 'text',
       content: 'Thank you for being the most amazing person in my life. I love you!'
     },
-    // To add an image, use this format:
-    // {
-    //   type: 'image',
-    //   src: '/images/photo1.jpg',
-    //   caption: 'Remember this day? ❤️'
-    // }
+    // Add infinite messages here!
   ];
+
+  // Slideshow effect - changes every 3 seconds
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentImageIndex((prevIndex) => 
+      (prevIndex + 1) % slideshowImages.length
+    );
+  }, 7000);  // Changed from 3000 to 7000
+
+  return () => clearInterval(interval);
+}, [slideshowImages.length]);
 
   const generateHeart = () => {
     const newHeart = {
@@ -72,12 +86,10 @@ function App() {
   };
 
   const handleButtonClick = () => {
-    // Generate hearts
     for (let i = 0; i < 5; i++) {
       setTimeout(() => generateHeart(), i * 100);
     }
 
-    // Show new message
     setShowMessage(false);
     setTimeout(() => {
       const message = getRandomMessage();
@@ -88,7 +100,24 @@ function App() {
 
   return (
     <div className="app">
-      {/* Floating hearts animation */}
+      {/* Background slideshow */}
+<div className="slideshow-background">
+  {slideshowImages.length > 0 ? (
+    slideshowImages.map((image, index) => (
+      <div
+        key={index}
+        className={`slideshow-image ${index === currentImageIndex ? 'active' : ''}`}
+        style={{ backgroundImage: `url(${image})` }}
+      />
+    ))
+  ) : (
+    <div className="slideshow-image active" style={{ 
+      background: 'linear-gradient(135deg, #ffeef8 0%, #ffe0f0 25%, #ffd4e5 50%, #ffc8df 75%, #ffb3d9 100%)' 
+    }} />
+  )}
+  <div className="slideshow-overlay" />
+</div>
+
       <div className="hearts-container">
         {hearts.map(heart => (
           <div
@@ -105,7 +134,6 @@ function App() {
         ))}
       </div>
 
-      {/* Main content */}
       <div className="content">
         <h1 className="title">
           <span className="heart-icon">💝</span>
@@ -115,7 +143,6 @@ function App() {
 
         <p className="subtitle">Tap the button to discover how much you mean to me</p>
 
-        {/* Message display */}
         <div className={`message-container ${showMessage ? 'show' : ''}`}>
           {currentMessage && (
             <>
@@ -133,15 +160,12 @@ function App() {
           )}
         </div>
 
-        {/* The button */}
         <button className="valentine-button" onClick={handleButtonClick}>
           <span className="button-text">Tap to See</span>
           <span className="button-heart">💖</span>
         </button>
-        
       </div>
 
-      {/* Background decoration */}
       <div className="background-hearts">
         <div className="bg-heart" style={{ top: '10%', left: '10%' }}>💕</div>
         <div className="bg-heart" style={{ top: '20%', right: '15%' }}>💗</div>
