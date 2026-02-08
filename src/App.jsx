@@ -109,7 +109,7 @@ function App() {
       <div className="content">
         <h1 className="title">
           <span className="heart-icon">💝</span>
-          For My Valentine
+          For My Baby
           <span className="heart-icon">💝</span>
         </h1>
 
@@ -135,17 +135,10 @@ function App() {
 
         {/* The button */}
         <button className="valentine-button" onClick={handleButtonClick}>
-          <span className="button-text">Show Me Love</span>
+          <span className="button-text">Tap to See</span>
           <span className="button-heart">💖</span>
         </button>
-
-        <p className="counter">
-          {usedMessages.length > 0 && (
-            <span className="message-count">
-              {usedMessages.length} of {messages.length} messages revealed
-            </span>
-          )}
-        </p>
+        
       </div>
 
       {/* Background decoration */}
